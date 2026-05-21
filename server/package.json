@@ -1,0 +1,26 @@
+{
+  "name": "sipendikan_ai",
+  "version": "1.0.0",
+  "description": "siPENDIdikan AI backend server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.34.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.4",
+    "uuid": "^9.0.0",
+    "winston": "^3.9.0",
+    "zod": "^3.23.2"
+  }
+}

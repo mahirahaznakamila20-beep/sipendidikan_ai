@@ -1,0 +1,20 @@
+{
+  "questions":[
+      {
+         "type":"pilihan_ganda",
+         "difficulty":"sedang",
+         "question":"Dalam Al-Quran, surat Al-Baqarah memiliki jumlah ayat sebanyak?",
+         "options":[
+            "A. 200 ayat",
+            "B. 286 ayat",
+            "C. 150 ayat",
+            "D. 100 ayat"
+         ],
+         "answer":"B",
+         "explanation":"Surat Al-Baqarah memiliki 286 ayat, menjadikannya surat terpanjang dalam Al-Quran.",
+         "bloom":"C2",
+         "image_url":null,
+         "rubric":null
+      }
+   ]
+}

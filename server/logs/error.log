@@ -1,0 +1,121 @@
+2026-05-19T03:08:03.801Z error: TokenExpiredError: jwt expired
+    at D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:101:10)
+    at verifyToken (D:\newsipendi\server\utils\jwt.js:18:14)
+    at authenticate (D:\newsipendi\server\middlewares\auth.js:13:21)
+    at Layer.handle [as handle_request] (D:\newsipendi\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (D:\newsipendi\server\node_modules\express\lib\router\index.js:328:13)
+    at D:\newsipendi\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (D:\newsipendi\server\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\newsipendi\server\node_modules\express\lib\router\index.js:280:10)
+2026-05-19T03:08:03.835Z error: TokenExpiredError: jwt expired
+    at D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:101:10)
+    at verifyToken (D:\newsipendi\server\utils\jwt.js:18:14)
+    at authenticate (D:\newsipendi\server\middlewares\auth.js:13:21)
+    at Layer.handle [as handle_request] (D:\newsipendi\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (D:\newsipendi\server\node_modules\express\lib\router\index.js:328:13)
+    at D:\newsipendi\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (D:\newsipendi\server\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\newsipendi\server\node_modules\express\lib\router\index.js:280:10)
+2026-05-19T03:08:04.066Z error: TokenExpiredError: jwt expired
+    at D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:101:10)
+    at verifyToken (D:\newsipendi\server\utils\jwt.js:18:14)
+    at authenticate (D:\newsipendi\server\middlewares\auth.js:13:21)
+    at Layer.handle [as handle_request] (D:\newsipendi\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (D:\newsipendi\server\node_modules\express\lib\router\index.js:328:13)
+    at D:\newsipendi\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (D:\newsipendi\server\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\newsipendi\server\node_modules\express\lib\router\index.js:280:10)
+2026-05-19T03:08:04.079Z error: TokenExpiredError: jwt expired
+    at D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:101:10)
+    at verifyToken (D:\newsipendi\server\utils\jwt.js:18:14)
+    at authenticate (D:\newsipendi\server\middlewares\auth.js:13:21)
+    at Layer.handle [as handle_request] (D:\newsipendi\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (D:\newsipendi\server\node_modules\express\lib\router\index.js:328:13)
+    at D:\newsipendi\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (D:\newsipendi\server\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\newsipendi\server\node_modules\express\lib\router\index.js:280:10)
+2026-05-19T05:52:01.197Z error: TokenExpiredError: jwt expired
+    at D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:101:10)
+    at verifyToken (D:\newsipendi\server\utils\jwt.js:18:14)
+    at authenticate (D:\newsipendi\server\middlewares\auth.js:13:21)
+    at Layer.handle [as handle_request] (D:\newsipendi\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (D:\newsipendi\server\node_modules\express\lib\router\index.js:328:13)
+    at D:\newsipendi\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (D:\newsipendi\server\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\newsipendi\server\node_modules\express\lib\router\index.js:280:10)
+2026-05-19T08:00:37.460Z error: TokenExpiredError: jwt expired
+    at D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:101:10)
+    at verifyToken (D:\newsipendi\server\utils\jwt.js:18:14)
+    at authenticate (D:\newsipendi\server\middlewares\auth.js:13:21)
+    at Layer.handle [as handle_request] (D:\newsipendi\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (D:\newsipendi\server\node_modules\express\lib\router\index.js:328:13)
+    at D:\newsipendi\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (D:\newsipendi\server\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\newsipendi\server\node_modules\express\lib\router\index.js:280:10)
+2026-05-19T10:38:24.716Z error: TokenExpiredError: jwt expired
+    at D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:101:10)
+    at verifyToken (D:\newsipendi\server\utils\jwt.js:18:14)
+    at authenticate (D:\newsipendi\server\middlewares\auth.js:13:21)
+    at Layer.handle [as handle_request] (D:\newsipendi\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (D:\newsipendi\server\node_modules\express\lib\router\index.js:328:13)
+    at D:\newsipendi\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (D:\newsipendi\server\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\newsipendi\server\node_modules\express\lib\router\index.js:280:10)
+2026-05-19T11:40:09.636Z error: TokenExpiredError: jwt expired
+    at D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:101:10)
+    at verifyToken (D:\newsipendi\server\utils\jwt.js:18:14)
+    at authenticate (D:\newsipendi\server\middlewares\auth.js:13:21)
+    at Layer.handle [as handle_request] (D:\newsipendi\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (D:\newsipendi\server\node_modules\express\lib\router\index.js:328:13)
+    at D:\newsipendi\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (D:\newsipendi\server\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\newsipendi\server\node_modules\express\lib\router\index.js:280:10)
+2026-05-19T11:40:09.664Z error: TokenExpiredError: jwt expired
+    at D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:101:10)
+    at verifyToken (D:\newsipendi\server\utils\jwt.js:18:14)
+    at authenticate (D:\newsipendi\server\middlewares\auth.js:13:21)
+    at Layer.handle [as handle_request] (D:\newsipendi\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (D:\newsipendi\server\node_modules\express\lib\router\index.js:328:13)
+    at D:\newsipendi\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (D:\newsipendi\server\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\newsipendi\server\node_modules\express\lib\router\index.js:280:10)
+2026-05-19T16:09:24.190Z error: TokenExpiredError: jwt expired
+    at D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:101:10)
+    at verifyToken (D:\newsipendi\server\utils\jwt.js:18:14)
+    at authenticate (D:\newsipendi\server\middlewares\auth.js:13:21)
+    at Layer.handle [as handle_request] (D:\newsipendi\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (D:\newsipendi\server\node_modules\express\lib\router\index.js:328:13)
+    at D:\newsipendi\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (D:\newsipendi\server\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\newsipendi\server\node_modules\express\lib\router\index.js:280:10)
+2026-05-19T22:25:54.203Z error: TokenExpiredError: jwt expired
+    at D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\newsipendi\server\node_modules\jsonwebtoken\verify.js:101:10)
+    at verifyToken (D:\newsipendi\server\utils\jwt.js:18:14)
+    at authenticate (D:\newsipendi\server\middlewares\auth.js:13:21)
+    at Layer.handle [as handle_request] (D:\newsipendi\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (D:\newsipendi\server\node_modules\express\lib\router\index.js:328:13)
+    at D:\newsipendi\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (D:\newsipendi\server\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\newsipendi\server\node_modules\express\lib\router\index.js:280:10)
