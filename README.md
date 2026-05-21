@@ -13,10 +13,11 @@ Smart Islamic Platform for Educators and Digital Learning with AI.
 1. Salin `.env.example` ke `.env`
 2. Isi variabel:
    - `SUPABASE_URL`
-   - `SUPABASE_KEY`
+   - `SUPABASE_KEY` (atau `SUPABASE_SERVICE_ROLE_KEY` untuk operasi admin Supabase)
    - `JWT_SECRET`
    - `GROQ_API_KEY`
    - `GROQ_API_URL`
+   - `BASE_URL` (opsional untuk skrip pengujian, default `http://localhost:5000`)
 3. Pastikan Supabase sudah dibuat dari `database/schema.sql`.
 
 ## Instalasi

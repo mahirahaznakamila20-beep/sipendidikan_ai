@@ -1,4 +1,5 @@
-const base = 'https://sipendidikan-ai-8boz.vercel.app';
+require('dotenv').config();
+const base = process.env.BASE_URL || 'http://localhost:5000';
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const headers = (token) => ({ 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) });
 
