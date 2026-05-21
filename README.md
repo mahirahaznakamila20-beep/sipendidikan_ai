@@ -17,6 +17,7 @@ Smart Islamic Platform for Educators and Digital Learning with AI.
    - `JWT_SECRET`
    - `GROQ_API_KEY`
    - `GROQ_API_URL`
+   - `PORT` (opsional, default `5000`)
    - `BASE_URL` (opsional untuk skrip pengujian, default `http://localhost:5000`)
 3. Pastikan Supabase sudah dibuat dari `database/schema.sql`.
 
@@ -54,6 +55,20 @@ npm start
 - Pasang environment variables di hosting
 - Deploy server Node.js ke platform apa pun yang mendukung Express
 - Gunakan `client/index.html` sebagai front-end statis
+
+## Deploy ke Vercel
+
+1. Pastikan root repo memiliki `package.json`, `vercel.json`, dan `.vercelignore`.
+2. Pastikan `server/package.json` berisi semua dependencies runtime.
+3. Di Vercel, atur project root ke folder repo ini.
+4. Gunakan `vercel` atau UI Vercel untuk deploy.
+5. Jika perlu, set environment variables:
+   - `SUPABASE_URL`
+   - `SUPABASE_KEY` atau `SUPABASE_SERVICE_ROLE_KEY`
+   - `JWT_SECRET`
+   - `GROQ_API_KEY`
+   - `GROQ_API_URL`
+   - `PORT` (opsional)
 
 ## Koneksi Supabase
 

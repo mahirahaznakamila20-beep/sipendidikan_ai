@@ -101,7 +101,11 @@ const getExamResults = async (req, res) => {
   const { id: student_id } = req.user;
   const { data, error: err } = await supabase.from('exam_results').select('*, exams(title, start_time, end_time)').eq('student_id', student_id).order('submitted_at', { ascending: false });
   if (err) return error(res, err.message, 500);
-  return success(res, data);
+  const normalized = (data || []).map((row) => ({
+    ...row,
+    score: row.score != null ? Number(row.score) : null,
+  }));
+  return success(res, normalized);
 };
 
 const getStudentProfile = async (req, res) => {

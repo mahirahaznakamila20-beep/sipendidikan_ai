@@ -24,6 +24,8 @@ router.delete('/students/:id', tenant('students'), controller.deleteStudent);
 
 router.get('/subjects', controller.listSubjects);
 router.get('/classes', controller.listClasses);
+router.get('/results', controller.listTeacherResults);
+router.put('/results/:id', controller.updateExamResultScore);
 
 router.get('/bank', controller.listQuestionBanks);
 router.get('/bank/packages', controller.listQuestionPackages);

@@ -1,0 +1,31 @@
+{
+  "version": 3,
+  "builds": [
+    {
+      "src": "server/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/server/index.js"
+    },
+    {
+      "src": "/css/(.*)",
+      "dest": "/client/css/$1"
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "/client/js/$1"
+    },
+    {
+      "src": "/(.*\\.html)",
+      "dest": "/client/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/client/index.html"
+    }
+  ]
+}

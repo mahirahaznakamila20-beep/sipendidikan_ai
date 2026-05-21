@@ -6,7 +6,6 @@ const { sanitizeObject } = require('../utils/sanitize');
 const { error, success } = require('../utils/response');
 const { generateQuestionBank } = require('../services/groqService');
 const { v4: uuidv4 } = require('uuid');
-console.log('teacherController loaded');
 
 const getSchoolProfile = async (req, res) => {
   const { school_id } = req.user;
@@ -131,6 +130,97 @@ const listClasses = async (req, res) => {
   const { data, error: err } = await supabase.from('classes').select('*').order('class_name', { ascending: true });
   if (err) return error(res, err.message, 500);
   return success(res, data);
+};
+
+const listTeacherResults = async (req, res) => {
+  try {
+    const { id: user_id, school_id } = req.user;
+    const { data: teacherRow, error: teacherErr } = await supabase.from('teachers').select('id').match({ user_id, school_id }).single();
+    if (teacherErr || !teacherRow) return error(res, teacherErr?.message || 'Guru tidak ditemukan', 404);
+    const teacherId = teacherRow.id;
+
+    const [classRows, subjectRows] = await Promise.all([
+      supabase.from('teacher_classes').select('class_id').eq('teacher_id', teacherId),
+      supabase.from('teacher_subjects').select('subject_id').eq('teacher_id', teacherId),
+    ]);
+
+    const allowedClassIds = (classRows.data || []).map((row) => row.class_id).filter(Boolean);
+    const allowedSubjectIds = (subjectRows.data || []).map((row) => row.subject_id).filter(Boolean);
+
+    const { data, error: err } = await supabase.from('exam_results')
+      .select('id, score, submitted_at, exams(id,title,class_id,subject_id,school_id), students(id,student_name,nisn,class_id)')
+      .order('submitted_at', { ascending: false });
+
+    if (err) return error(res, err.message, 500);
+
+    const filtered = (data || []).filter((row) => {
+      const exam = row.exams || {};
+      if (exam.school_id && exam.school_id !== school_id) return false;
+      if (!allowedClassIds.length && !allowedSubjectIds.length) return true;
+      const byClass = allowedClassIds.includes(exam.class_id) || allowedClassIds.includes(row.students?.class_id);
+      const bySubject = allowedSubjectIds.includes(exam.subject_id);
+      return byClass || bySubject;
+    });
+
+    const normalized = filtered.map((row) => ({
+      ...row,
+      score: row.score != null ? Number(row.score) : null,
+    }));
+
+    return success(res, normalized);
+  } catch (err) {
+    return error(res, err.message || 'Gagal memuat rekap nilai', 500);
+  }
+};
+
+const updateExamResultScore = async (req, res) => {
+  try {
+    const { id: user_id, school_id } = req.user;
+    const resultId = req.params.id;
+    const { score } = req.body;
+
+    if (score === undefined || score === null || score === '') {
+      return error(res, 'Nilai wajib diisi', 400);
+    }
+
+    const numericScore = Number(score);
+    if (Number.isNaN(numericScore) || numericScore < 0) {
+      return error(res, 'Nilai tidak valid', 400);
+    }
+
+    const { data: teacherRow, error: teacherErr } = await supabase.from('teachers').select('id').match({ user_id, school_id }).single();
+    if (teacherErr || !teacherRow) return error(res, teacherErr?.message || 'Guru tidak ditemukan', 404);
+    const teacherId = teacherRow.id;
+
+    const { data: examResult, error: examResultErr } = await supabase.from('exam_results').select('id, exam_id').eq('id', resultId).single();
+    if (examResultErr || !examResult) return error(res, examResultErr?.message || 'Hasil ujian tidak ditemukan', 404);
+
+    const [examRes, classRows, subjectRows] = await Promise.all([
+      supabase.from('exams').select('id,class_id,subject_id,school_id').eq('id', examResult.exam_id).single(),
+      supabase.from('teacher_classes').select('class_id').eq('teacher_id', teacherId),
+      supabase.from('teacher_subjects').select('subject_id').eq('teacher_id', teacherId),
+    ]);
+
+    if (examRes.error || !examRes.data) return error(res, examRes.error?.message || 'Ujian tidak ditemukan', 404);
+    if (examRes.data.school_id !== school_id) return error(res, 'Akses ditolak', 403);
+
+    const allowedClassIds = (classRows.data || []).map((row) => row.class_id).filter(Boolean);
+    const allowedSubjectIds = (subjectRows.data || []).map((row) => row.subject_id).filter(Boolean);
+    if (allowedClassIds.length || allowedSubjectIds.length) {
+      const examMatch = allowedClassIds.includes(examRes.data.class_id) || allowedSubjectIds.includes(examRes.data.subject_id);
+      if (!examMatch) return error(res, 'Akses ditolak', 403);
+    }
+
+    const { error: updateErr } = await supabase.from('exam_results').update({ score: numericScore }).eq('id', resultId);
+    if (updateErr) return error(res, updateErr.message, 400);
+
+    const { data: updatedResult, error: fetchErr } = await supabase.from('exam_results').select('id, score, submitted_at').eq('id', resultId).single();
+    if (fetchErr) return error(res, fetchErr.message, 500);
+
+    return success(res, updatedResult, 'Nilai berhasil diperbarui');
+  } catch (err) {
+    return error(res, err.message || 'Gagal memperbarui nilai', 500);
+  }
 };
 
 const importStudents = async (req, res) => {
@@ -869,8 +959,6 @@ const createExam = async (req, res) => {
       return error(res, err.message || 'Gagal insert ujian ke database', 400);
     }
 
-    console.log('Exam inserted successfully with id:', examId);
-
     const { data: questions, error: errQuestions } = await supabase
       .from('question_banks')
       .select('id')
@@ -890,8 +978,6 @@ const createExam = async (req, res) => {
       return error(res, 'Tidak ada soal ditemukan untuk paket ujian ini. Pastikan paket sudah berisi soal.', 400);
     }
 
-    console.log(`Found ${questions.length} questions for exam`);
-
     const examQuestions = questions.map((item, index) => ({ 
       id: uuidv4(), 
       exam_id: examId, 
@@ -905,8 +991,6 @@ const createExam = async (req, res) => {
       await supabase.from('exams').delete().eq('id', examId);
       return error(res, errExamQuestions.message || 'Gagal menambahkan soal ke ujian', 400);
     }
-
-    console.log('Exam created successfully');
     
     const examResponse = {
       id: examId,
@@ -977,6 +1061,8 @@ module.exports = {
   deleteStudent,
   listSubjects,
   listClasses,
+  listTeacherResults,
+  updateExamResultScore,
   listQuestionBanks,
   createQuestion,
   updateQuestion,

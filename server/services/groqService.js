@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 const GROQ_API_URL = process.env.GROQ_API_URL;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
@@ -211,9 +209,7 @@ await response.json();
 
 if(!response.ok){
 
-console.log(
-"GROQ ERROR:",
-data
+console.error(
 );
 
 throw new Error(
@@ -353,19 +349,6 @@ throw new Error(
 
 }
 
-fs.writeFileSync(
-'groq-debug.txt',
-content
-);
-
-console.log(
-"GROQ RESPONSE:"
-);
-
-console.log(
-content
-);
-
 const parsed=
 extractJson(
 content
@@ -392,12 +375,9 @@ throw new Error(
 
 lastError=err;
 
-console.log(
-"ATTEMPT:",
-attempt
-);
-
-console.log(
+console.error(
+"GROQ ATTEMPT",
+attempt,
 err.message
 );
 

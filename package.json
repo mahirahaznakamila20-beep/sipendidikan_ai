@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "newsipendi-root",
+  "version": "1.0.0",
+  "workspaces": [
+    "server"
+  ],
+  "scripts": {
+    "dev": "cd server && npm run dev",
+    "start": "cd server && npm start"
+  }
+}

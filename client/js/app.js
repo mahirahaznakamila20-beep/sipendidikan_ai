@@ -176,6 +176,7 @@ window.handleNav = async (action) => {
     case 'guruExam': return loadTeacherExams();
     case 'guruAI': return loadTeacherAI();
     case 'guruMaterial': return loadTeacherMaterial();
+    case 'guruResults': return loadTeacherScoreRecap();
     case 'siswaDashboard': return loadStudentDashboard();
     case 'siswaProfile': return loadStudentProfile();
     case 'siswaModules': return loadStudentModules();
@@ -217,6 +218,8 @@ document.body.addEventListener('click', (event) => {
     case 'downloadQuestionTemplate': return window.downloadQuestionTemplate();
     case 'importQuestion': return document.getElementById('importQuestionFile')?.click();
     case 'printQuestions': return window.printQuestions();
+    case 'printScoreRecap': return window.printScoreRecap();
+    case 'saveExamResultScore': return window.saveExamResultScore(id);
     case 'openExamToken': return window.openExamByToken(el.dataset.token);
     case 'copyExamToken': return window.copyExamToken(el.dataset.token);
     case 'closeModal': return el.closest('.modal-overlay')?.remove();
@@ -248,6 +251,7 @@ const renderDashboardMenu = (role) => {
     items.push(navItem('Identitas Sekolah', 'guruSchool'));
     items.push(navItem('Profil Guru', 'guruProfile'));
     items.push(navItem('Data Siswa', 'guruStudents'));
+    items.push(navItem('Rekap Nilai', 'guruResults'));
     items.push(navItem('Bank Soal', 'guruBank'));
     items.push(navItem('Ruang Ujian', 'guruExam'));
     items.push(navItem('AI Generator', 'guruAI'));
@@ -1040,6 +1044,134 @@ window.cancelTeacherStudentEdit = () => {
   document.getElementById('studentCancelEdit').style.display = 'none';
 };
 
+const loadTeacherScoreRecap = async () => {
+  dashboardContent.innerHTML = '<div class="panel"><h3>Rekap Nilai Siswa</h3><div>Memuat...</div></div>';
+  const [resultRes, classesRes] = await Promise.all([
+    fetchApi('/api/teacher/results'),
+    fetchApi('/api/teacher/classes'),
+  ]);
+
+  if (!resultRes.success) return dashboardContent.innerHTML = `<p>${resultRes.message}</p>`;
+
+  const classMap = (classesRes.success ? classesRes.data : []).reduce((map, cls) => {
+    map[cls.id] = cls.class_name;
+    return map;
+  }, {});
+
+  const rows = (resultRes.data || []).map((result) => {
+    const student = result.students || {};
+    const exam = result.exams || {};
+    const scoreValue = result.score != null ? result.score : '';
+    const className = classMap[student.class_id] || classMap[exam.class_id] || student.class_id || exam.class_id || '-';
+    const submittedAt = result.submitted_at ? new Date(result.submitted_at).toLocaleString('id-ID') : '-';
+    return `
+      <tr data-result-row="${result.id}">
+        <td>${student.student_name || '-'}</td>
+        <td>${student.nisn || '-'}</td>
+        <td>${className}</td>
+        <td>${exam.title || '-'}</td>
+        <td>
+          <input type="number" min="0" step="1" class="score-input" data-score-id="${result.id}" value="${scoreValue}" style="width: 5rem;">
+        </td>
+        <td>${submittedAt}</td>
+        <td>
+          <button type="button" class="btn btn-primary btn-sm" data-action="saveExamResultScore" data-id="${result.id}">Simpan</button>
+          <span class="result-save-message" style="margin-left:.5rem"></span>
+        </td>
+      </tr>`;
+  }).join('');
+
+  dashboardContent.innerHTML = `
+    <div class="panel printable" id="scoreRecapTablePanel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+        <h3>Rekap Nilai Siswa</h3>
+        <button type="button" class="btn btn-secondary" data-action="printScoreRecap">Cetak Rekap</button>
+      </div>
+      <table class="table" style="margin-top:1rem;">
+        <thead>
+          <tr>
+            <th>Nama Siswa</th>
+            <th>NISN</th>
+            <th>Kelas</th>
+            <th>Ujian</th>
+            <th>Nilai</th>
+            <th>Tanggal</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>${rows || '<tr><td colspan="7">Belum ada hasil ujian.</td></tr>'}</tbody>
+      </table>
+      <div class="message" id="scoreRecapMessage"></div>
+    </div>`;
+};
+
+window.saveExamResultScore = async (id) => {
+  const row = document.querySelector(`[data-result-row="${id}"]`);
+  if (!row) return;
+  const input = row.querySelector('.score-input');
+  const messageEl = row.querySelector('.result-save-message');
+  if (!input) return;
+
+  const rawValue = input.value.trim();
+  if (rawValue === '') {
+    showMessage(messageEl, 'Isi nilai terlebih dahulu', false);
+    return;
+  }
+
+  const score = Number(rawValue);
+  if (Number.isNaN(score) || score < 0) {
+    showMessage(messageEl, 'Nilai tidak valid', false);
+    return;
+  }
+
+  const button = row.querySelector('[data-action="saveExamResultScore"]');
+  if (button) {
+    button.disabled = true;
+    button.textContent = 'Menyimpan...';
+  }
+
+  const res = await fetchApi(`/api/teacher/results/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({ score }),
+  });
+
+  if (button) {
+    button.disabled = false;
+    button.textContent = 'Simpan';
+  }
+
+  if (!res.success) {
+    showMessage(messageEl, res.message || 'Gagal menyimpan nilai', false);
+    return;
+  }
+
+  showMessage(messageEl, res.message || 'Nilai tersimpan', true);
+  setTimeout(() => {
+    loadTeacherScoreRecap();
+  }, 600);
+};
+
+window.printTable = (selector) => {
+  const container = document.querySelector(selector);
+  if (!container) return;
+  const style = document.createElement('style');
+  style.id = 'printable-table-style';
+  style.textContent = `
+    @media print {
+      body * { visibility: hidden !important; }
+      ${selector}, ${selector} * { visibility: visible !important; }
+      ${selector} { position: absolute; left: 0; top: 0; width: 100%; }
+    }
+  `;
+  document.head.appendChild(style);
+  window.print();
+  document.head.removeChild(style);
+};
+
+window.printScoreRecap = () => {
+  window.printTable('#scoreRecapTablePanel');
+};
+
 window.deleteTeacherStudent = async (id) => {
   if (!confirm('Hapus siswa ini?')) return;
   const res = await fetchApi(`/api/teacher/students/${id}`, { method: 'DELETE' });
@@ -1616,8 +1748,6 @@ if (questionForm) {
         // attach points and optional package
         body.points = Number(document.getElementById('questionPoints')?.value) || 1;
         body.package_name = document.getElementById('questionPackageName')?.value || null;
-
-        console.log(body);
 
         setFormBusy(questionForm, true);
 
@@ -2758,17 +2888,18 @@ const loadStudentResults = async () => {
   let totalScore = 0;
   let completedCount = 0;
   const rows = result.data.map((result) => {
-    if (result.score !== null) {
-      totalScore += result.score;
+    const score = result.score != null ? Number(result.score) : null;
+    if (score !== null && !Number.isNaN(score)) {
+      totalScore += score;
       completedCount++;
     }
     return `
     <tr>
       <td>${result.exams?.title || '-'}</td>
       <td>${new Date(result.submitted_at).toLocaleDateString('id-ID')}</td>
-      <td>${result.score !== null ? Math.round(result.score) + '%' : 'Sedang dikerjakan'}</td>
+      <td>${score !== null && !Number.isNaN(score) ? Math.round(score) + '%' : 'Sedang dikerjakan'}</td>
       <td>
-        ${result.score !== null ? `<button type="button" class="btn btn-secondary view-result-btn" data-id="${result.id}" style="font-size: 0.85rem;">Lihat Detail</button>` : '-'}
+        ${score !== null && !Number.isNaN(score) ? `<button type="button" class="btn btn-secondary view-result-btn" data-id="${result.id}" style="font-size: 0.85rem;">Lihat Detail</button>` : '-'}
       </td>
     </tr>
   `;
@@ -2823,6 +2954,7 @@ const loadStudentResults = async () => {
 };
 
 window.showResultDetail = (result) => {
+  const score = result.score != null ? Number(result.score) : null;
   const modal = document.createElement('div');
   modal.className = 'modal-overlay';
   modal.innerHTML = `
@@ -2831,7 +2963,7 @@ window.showResultDetail = (result) => {
       <div style="padding: 16px; background: #f9f9f9; border-radius: 8px;">
         <p><strong>Nama Ujian:</strong> ${result.exams?.title}</p>
         <p><strong>Tanggal:</strong> ${new Date(result.submitted_at).toLocaleString('id-ID')}</p>
-        <p><strong>Nilai:</strong> <strong style="font-size: 1.2em; color: #2ecc71;">${Math.round(result.score)}%</strong></p>
+        <p><strong>Nilai:</strong> <strong style="font-size: 1.2em; color: #2ecc71;">${score !== null && !Number.isNaN(score) ? Math.round(score) + '%' : 'Sedang dinilai'}</strong></p>
         <p><strong>Waktu Mulai:</strong> ${new Date(result.exams?.start_time).toLocaleString('id-ID')}</p>
         <p><strong>Waktu Selesai:</strong> ${new Date(result.exams?.end_time).toLocaleString('id-ID')}</p>
       </div>
