@@ -1,4 +1,4 @@
-const base = 'http://localhost:5000';
+const base = 'https://sipendidikan-ai-8boz.vercel.app';
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const headers = (token) => ({ 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) });
 

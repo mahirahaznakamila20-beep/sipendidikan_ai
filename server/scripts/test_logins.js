@@ -1,8 +1,7 @@
 require('dotenv').config();
 const fetch = global.fetch || require('node-fetch');
 
-const base = process.env.PORT ? `http://localhost:${process.env.PORT}` : 'http://localhost:5001';
-
+const base = 'https://sipendidikan-ai-8boz.vercel.app';
 const accounts = [
   { email: 'admin+test@example.com', password: 'AdminPass123!' },
   { email: 'guru+test@example.com', password: 'GuruPass123!' },
