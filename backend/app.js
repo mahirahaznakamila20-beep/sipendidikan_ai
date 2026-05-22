@@ -27,9 +27,9 @@ app.use('/api/teacher', teacherRouter);
 app.use('/api/student', studentRouter);
 app.use('/api/ai', aiRouter);
 
-app.use(express.static(path.join(__dirname, '..', 'client')));
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
 });
 
 // Centralized error handler (must be after routes)

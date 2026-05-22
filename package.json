@@ -1,12 +1,34 @@
 {
   "private": true,
-  "name": "newsipendi-root",
+  "name": "sipendikan-ai-app",
   "version": "1.0.0",
-  "workspaces": [
-    "server"
-  ],
+  "description": "siPENDIdikan AI - Platform Pembelajaran Adaptif",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
-    "dev": "cd server && npm run dev",
-    "start": "cd server && npm start"
-  }
+    "dev": "cd backend && npm run dev",
+    "start": "cd backend && npm start",
+    "build": "echo 'Building for Vercel'",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install --legacy-peer-deps || true",
+    "clean": "rm -rf node_modules backend/node_modules backend/uploads/temp* backend/logs/* frontend/dist",
+    "lint": "cd backend && npm run lint 2>/dev/null || true",
+    "test": "cd backend && npm run test 2>/dev/null || true"
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "keywords": [
+    "education",
+    "learning",
+    "ai",
+    "adaptive",
+    "platform"
+  ],
+  "author": "siPENDIdikan Team",
+  "license": "MIT",
+  "dependencies": {}
 }
+

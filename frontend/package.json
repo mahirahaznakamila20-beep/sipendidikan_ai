@@ -1,0 +1,20 @@
+{
+  "name": "sipendikan-ai-frontend",
+  "version": "1.0.0",
+  "description": "siPENDIdikan AI Frontend - HTML/CSS/JS",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "dev": "echo 'Frontend is static HTML/CSS/JS. Open index.html in browser.'",
+    "build": "echo 'No build step needed for static frontend'",
+    "preview": "echo 'Frontend is static HTML/CSS/JS. Open index.html in browser.'"
+  },
+  "keywords": [
+    "education",
+    "learning",
+    "ai",
+    "frontend"
+  ],
+  "author": "siPENDIdikan Team",
+  "license": "MIT"
+}

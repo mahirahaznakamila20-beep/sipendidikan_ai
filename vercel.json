@@ -1,31 +1,46 @@
 {
-  "version": 3,
-  "builds": [
+  "version": 2,
+  "buildCommand": "npm install --legacy-peer-deps || true",
+  "devCommand": "cd backend && npm run dev",
+  "installCommand": "npm install --legacy-peer-deps || npm install",
+  "framework": "express",
+  "functions": {
+    "backend/index.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
     {
-      "src": "server/index.js",
-      "use": "@vercel/node"
+      "source": "/api/(.*)",
+      "destination": "/backend/index.js"
+    },
+    {
+      "source": "/css/(.*)",
+      "destination": "/frontend/css/$1"
+    },
+    {
+      "source": "/js/(.*)",
+      "destination": "/frontend/js/$1"
+    },
+    {
+      "source": "/(.*\\.html)",
+      "destination": "/frontend/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/index.html"
     }
   ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/server/index.js"
-    },
-    {
-      "src": "/css/(.*)",
-      "dest": "/client/css/$1"
-    },
-    {
-      "src": "/js/(.*)",
-      "dest": "/client/js/$1"
-    },
-    {
-      "src": "/(.*\\.html)",
-      "dest": "/client/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/client/index.html"
-    }
+  "env": [
+    "SUPABASE_URL",
+    "SUPABASE_KEY",
+    "GROQ_API_KEY",
+    "GROQ_API_URL",
+    "JWT_SECRET",
+    "REFRESH_EXPIRE_DAYS",
+    "NODE_ENV",
+    "PORT"
   ]
 }
+
